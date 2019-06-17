@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 普通数组的遍历 -->
+      <div>
+        <h1>普通数组的遍历</h1>
+        <p v-for="item in list">{{item}}</p>
+        <p v-for="(item,index) in list ">索引：{{index}}--值：{{item}}</p>
+      </div>
+      <!-- 遍历对象数组 -->
+      <div>
+          <h1>遍历对象数组</h1>
+          <p v-for="item in list1">{{item.name}}---{{item.age}}</p>
+          <p v-for="(item,index) in list1">{{item.name}}---{{item.age}}---{{index}}</p>
+      </div>
+      <!-- 遍历对象 -->
+      <div>
+          <h1>遍历对象</h1>
+          <p v-for="(key,val) in list2">{{key}}--{{val}}</p>
+          <p v-for="(key,val,index) in list2">{{key}}--{{val}}---{{index}}</p>
+      </div>
+      <!-- 迭代数字 -->
+      <div>
+          <h1>迭代数字(数字迭代是从1 开始的)</h1>
+          <p v-for="index in 10">这是第{{index}}次循环</p>
+      </div>
+    </div>
+    
+    <script>
+        var vm=new Vue ({
+            el: '#app',
+            data: {
+                //普通数组
+                list: [1,2,3,4,5,6],
+                //对象数组
+                list1:[
+                    {name:'zll',age:10},
+                    {name:'zjj',age:11},
+                    {name:'zss',age:12}
+                ],
+                //遍历对象
+                list2:{
+                    name:'zll',
+                    sex:'f',
+                    age:11
+                }
+            },  
+            methods: {
+            }
+        })
+    </script>
+</body>
+</html>

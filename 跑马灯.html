@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="滚动" @click="roll">
+        <input type="button" value="停止" @click="stopRoll">
+        <h2>{{msg}}</h2>
+    </div>
+    <script>
+        var vm=new Vue ({
+            el: '#app',
+            data: {
+                msg: '这是一个跑马灯',
+                interval: 0
+            },
+            methods: {
+                roll () {
+                    clearInterval(this.interval)
+                    this.interval = setInterval(() => {
+                        let msg = this.msg
+                        this.msg = msg.substring(1)+msg.substring(0,1)
+                    }, 400)
+                },
+                stopRoll() {
+                    clearInterval(this.interval)
+                }
+            }
+        })
+    </script>
+</body>
+</html>

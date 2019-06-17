@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        #app{
+            display: flex;
+        }
+        .size{
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+        }
+        .bgcolor{
+            background-color:cyan;
+        }
+        .display{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 第一钟方式，数组的方式 -->
+       <div :class="['size','bgcolor','display']">
+           你好！用数组的方式来绑定css
+       </div>
+       <!-- 第二种方式，在数组中使用三元表达式 -->
+       <div :class="['size','bgcolor',flag?'display':'']">
+           在数组中使用三元表达式
+       </div>
+       <!-- 第三种方式,用对象来代替三元表达式 -->
+       <div :class="['size', 'bgcolor' , {'display':flag}]">
+           用对象代替三元表达式
+       </div>
+       <!-- 第四种方式,直接是用对象为元素绑定class,对象可以直接抽离为一个对象的变量  -->
+       <div :class="{size:true, bgcolor:true, display:true}">
+            直接是用对象为元素绑定class
+       </div>
+       <div :style="[style1,style2]">内联样式</div>
+    </div>
+    <script>
+        var vm=new Vue ({
+            el: '#app',
+            data: {
+               flag: true,
+               style1: {width:'100px',height:'100px','background-color':'#bcbcbc'},
+               style2: {margin:'10px'}
+            },
+            methods: {
+            }
+        })
+    </script>
+</body>
+</html>

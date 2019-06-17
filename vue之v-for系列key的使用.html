@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div id="app">
+      <label >count:</label><input type="text" v-model="count">
+      <label >name:</label><input type="text" v-model="name">
+      <input type="button" value="添加" @click="add">
+      <div v-for="item in list" :key="item.count">
+          <input type="checkbox">{{item.count}}---{{item.name}}
+      </div>
+    </div>
+    
+    <script>
+        var vm=new Vue ({
+            el: '#app',
+            data: {
+                count:'',
+                name:'',
+               list:[
+                   {count:1001,name:'aaa'},
+                   {count:1002,name:'bbb'},
+                   {count:1003,name:'ccc'},
+                   {count:1004,name:'ddd'},
+                   {count:1005,name:'eee'}
+               ]
+            },  
+            methods: {
+                add () {
+                    let p={
+                        count:this.count,
+                        name:this.name
+                    }
+                    this.list.unshift(p)
+                }
+            }
+        })
+    </script>
+</body>
+</html>

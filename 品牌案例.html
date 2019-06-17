@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div id="app">
+     <div class="panel panel-default">
+           <div class="panel-heading">
+                 <h3 class="panel-title">添加品牌</h3>
+           </div>
+           <div class="panel-body inline">
+   
+            <form action="" method="POST" class="form-inline" role="form">
+                <div class="form-group">
+                    <label>ID:   
+                        <input type="text" class="form-control" v-model='id' >                   
+                    </label>
+                    <label>Name:   
+                        <input type="text" class="form-control" v-model='name' >                   
+                    </label>                                   
+                    <button type="button" class="btn btn-primary" @click='add'>添加</button>
+                    <label >搜索关键字：
+                        <input type="text" class="form-control" v-model='keyword'>  
+                    </label>
+                </div>
+            </form>   
+           </div>
+     </div>
+        
+        <table class="table table-hover table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- v-for原本是item in list,但是在写搜索功能的时候，
+                    因为在键盘输入完毕以后就会根据关键字显示包含关键字的内容，
+                    所以就直接修改了，直接调用一个search函数，返回一个新的函数
+                -->
+                <tr v-for = "item in search(keyword)" :key="item.id">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.date | dateFormat('')}}</td>
+                    <td>
+                      <a href="" @click.prevent='del(item.id)'>删除</a>  
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        //定义一个vue过滤器来，规范日期的合适
+        Vue.filter('dateFormat',function(data,pattern){
+            let date=new Date(data)
+            let y=date.getFullYear()
+            let m=date.getMonth()+1
+            let d=date.getDate()
+            if(pattern=='yyyy-mm-dd'){
+                return `${y}-${m>9?'m':'0'+m}-${d>9?d:'0'+d}`
+            }else{
+                let hh=date.getHours()
+                let mm=date.getMinutes()
+                let ss=date.getSeconds()
+                return `${y}-${m>9?'m':'0'+m}-${d>9?d:'0'+d} ${hh}:${mm}:${ss}`
+            }
+        })
+        var vm=new Vue ({
+            el: '#app',
+            data: {
+                id:'',
+                name:'',
+                keyword:'',
+                list:[
+                    {id: 1,name: '奔驰',date: new Date()},
+                    {id: 2,name: '宝马',date: new Date()},
+                    {id: 3,name: '长安',date: new Date()},
+                    {id: 4,name: '奥迪',date: new Date()},
+                ]
+            },
+            methods: {
+              add() {
+                this.list.push({
+                    id:this.id,
+                    name:this.name,
+                    date:new Date()
+                })
+                this.id=this.name=''
+              },
+              del(id) {
+                //======for方式，这是我自己初始的，后来看了视频视频，发现for循环真的是low爆
+                // for(item in this.list){
+                //     if(this.list[item].id===id){
+                //         this.list.pop()
+                //         return
+                //     }
+                // }
+
+                //-------some:其中有一项返回true就会终止
+                // this.list.some((item,index)=>{
+                //     if(item.id===id){
+                //         this.list.splice(index,1)
+                //         return true
+                //     }
+                // })
+
+                //-----findIndex
+                let index=this.list.findIndex(item=>{
+                    if(item.id==id)
+                        return true
+                })
+                this.list.splice(index,1)
+              },
+              search(keyword) {
+                  //======方法1：用foreach进行循环，用indexOf进行查找是否包含关键字，
+                  //indexOf()没找到返回-1
+                // let newList=[]
+                // this.list.forEach((item,index)=>{
+                //     if(item.name.indexOf(keyword)!=-1){
+                //         newList.push(this.list[index])
+                //     }
+                // })
+                // return newList
+
+                //方法2：用filter函数过滤,用includes()进行判断，如果包含返回true
+                return this.list.filter((item)=>{
+                    return item.name.includes(keyword)
+                })
+              }
+            }
+        })
+    </script>
+</body>
+</html>
