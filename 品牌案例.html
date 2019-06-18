@@ -4,6 +4,7 @@
     <title></title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue-resource/1.5.1/vue-resource.js"></script>
     <style>
         
     </style>
@@ -26,7 +27,7 @@
                     </label>                                   
                     <button type="button" class="btn btn-primary" @click='add'>添加</button>
                     <label >搜索关键字：
-                        <input type="text" class="form-control" v-model='keyword'>  
+                        <input type="text" class="form-control" v-model='keyword' v-focus>  
                     </label>
                 </div>
             </form>   
@@ -50,7 +51,7 @@
                 <tr v-for = "item in search(keyword)" :key="item.id">
                     <td>{{item.id}}</td>
                     <td>{{item.name}}</td>
-                    <td>{{item.date | dateFormat('')}}</td>
+                    <td>{{item.date | dateFormat('yyyy-mm-dd')}}</td>
                     <td>
                       <a href="" @click.prevent='del(item.id)'>删除</a>  
                     </td>
@@ -59,19 +60,31 @@
         </table>
     </div>
     <script>
-        //定义一个vue过滤器来，规范日期的合适
-        Vue.filter('dateFormat',function(data,pattern){
+        //定义一个vue全局过滤器来，规范日期的合适
+        Vue.filter('dateFormat',function(data,pattern=''){
             let date=new Date(data)
             let y=date.getFullYear()
             let m=date.getMonth()+1
             let d=date.getDate()
             if(pattern=='yyyy-mm-dd'){
-                return `${y}-${m>9?'m':'0'+m}-${d>9?d:'0'+d}`
+                //在对字符串进行格式化的时候，乐意使用字符串的padStart（length,val）,padEnd(length,val)
+                // return `${y}-${m>9?'m':'0'+m}-${d>9?d:'0'+d}`
+                return `${y}-${m.toString().padStart(2,'0')}-${d.toString().padStart(2,'0')}`
             }else{
                 let hh=date.getHours()
                 let mm=date.getMinutes()
                 let ss=date.getSeconds()
                 return `${y}-${m>9?'m':'0'+m}-${d>9?d:'0'+d} ${hh}:${mm}:${ss}`
+            }
+        })
+        //使用自定义指令，使search框获得焦点,
+        //Vue.driective('第一个参数','第二个参数')
+        //第一个参数：指令的名字，在html中使用的时候，应加v-前缀
+        //第二个参数：{}是一个对象，里面包含指令各个阶段执行的函数
+        //bind:绑定的时候（只一次），inserted:元素插入到DOM的时候（只一次，对元素的操作的时候在此方法中），update:VNode更新的时候·····
+        Vue.directive('focus',{
+            inserted:function(el){
+                el.focus()
             }
         })
         var vm=new Vue ({

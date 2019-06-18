@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+</head>
+<body>
+    <div id="app">
+        <div >
+            <section v-if = "errored">
+                <div >Sorry，加载出错了</div>   
+            </section>
+            <section v-else>
+                <div v-if = "loading">loading</div>
+                <div v-else v-for = "item in prod">
+                    {{item.code}}---{{item.symbol}}--{{item.rate}}
+                </div>
+            </section>
+           
+        </div>
+    </div>
+    <script>
+        var vm=new Vue ({
+            el: '#app',
+            data: {
+               errored:false,
+               loading:true,
+               prod:[]
+            },
+            methods: {
+            },
+            created(){
+                /*
+                * 实现一个功能，想服务器请求数据，
+                        如果在请求的时候会有个loading的过程，   
+                        数据加载成功，显示正确数据
+                        数据加载失败，给予一个数据加载失败的提示             
+                */
+                console.log("zll")
+                let that = this
+                axios.get('https://api.coindesk.com/v1/bpi/currentprice.json').then(res=>{
+                    that.prod = res.data.bpi
+                }).catch(err=>{
+                    console.log(err)
+                    this.errored = true
+                }).finally(()=>{
+                    that.loading = false
+                })
+            }
+            
+        })
+    </script>
+</body>
+</html>
