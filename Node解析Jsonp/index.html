@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id='app'>
+        {{msg}}
+    </div>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                msg:''
+            },
+            methods: {
+                show(){
+                    axios.get('http://127.0.0.1:3000/getData')
+                    .then((res)=>{
+                        console.log(res)
+                        this.msg = res.data
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })   
+                },
+                add(){
+                    axios.post('http://127.0.0.1:3000/add',{
+                        id:'1001',
+                        name:'宝马'
+                    })
+                    .then((res) => {
+                        console.log(res)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+                }
+            },
+            created(){
+            //    this.show()
+            this.add()
+            }    
+        })
+
+    </script>
+    <!-- <script src="http://127.0.0.1:3000/getscript?callback=show"></script> -->
+</body>
+</html>
