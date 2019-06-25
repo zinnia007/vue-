@@ -14,7 +14,8 @@
         var vm = new Vue({
             el:'#app',
             data:{
-                msg:''
+                msg:'',
+                count:0
             },
             methods: {
                 show(){
@@ -29,14 +30,17 @@
                 },
                 add(){
                     console.log("add")
+                    let that=this;
+                   this.count++;
                     axios.post('http://127.0.0.1:3000/add',{
                         'id':'1001',
-                        'name':'宝马'
+                        'name':'zll'
                     })
                     .then((res) => {
+                        console.log("成功返回",that.count)
                         console.log(res.data)
                     })
-                    .catch((err)     => {
+                    .catch((err)=> {
                         console.log(err)
                     })
                 }
@@ -46,7 +50,6 @@
               this.add()
             }    
         })
-
     </script>
     <!-- <script src="http://127.0.0.1:3000/getscript?callback=show"></script> -->
 </body>

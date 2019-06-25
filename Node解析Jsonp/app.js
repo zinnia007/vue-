@@ -5,6 +5,7 @@ const querystring = require('querystring')
 
 //创建一个http服务器
 http.createServer((req,res) =>{
+    console.log(req.url,req.method)
     //简单粗暴解决二跨域问题，允许所有的域进行访问
     res.writeHead(200,{
         'Content-Type': 'text/plain',
@@ -26,7 +27,7 @@ http.createServer((req,res) =>{
                 res.end(data)
             }
         })
-    }else if(url === '/add'){
+    }else if(url === '/add' && req.method.toLocaleLowerCase() === 'post'){
             console.log("add")
             var body = '';
             //// 通过req的data事件监听函数，每当接受到请求体的数据，就累加到body变量中
@@ -36,18 +37,23 @@ http.createServer((req,res) =>{
 
             req.on('end', function () {
                 console.log(body)
-                fs.writeFile('data.txt',body,(err)=>{
-                    if(err){
-                        console.log(err)
-                    }else{
-                        console.log("ok")
-                    }
-                })    
-              })
-               
+                savefile(body)
+                res.end(body)
+                
+            })
     }else{
         res.end('404')
     }
 }).listen(3000,()=>{
     console.log('server listen at http://127.0.0.1:3000')
 })
+
+function savefile (data){
+ fs.writeFile('data.txt',data,(err)=>{
+    if(err){
+        console.log(err)
+    }else{
+        console.log("ok")
+    }
+  })   
+}

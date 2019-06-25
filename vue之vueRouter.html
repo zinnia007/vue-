@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 第一步：引入 -->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">dscc
+        <router-view></router-view>
+    </div>
+    <script>
+        // 第二步：定义路由组件，也可以从其他文件import进来
+        let option1 = { template:'<h1>登录按钮</h1>'}
+        let option2 = { template:'<h1>注册按钮</h1>'}
+        //第三步：定义路由,路由匹配规则
+        var routes =[
+            //每个路由规则都是一个对象，包含两个属性
+            //path:监听路由连接地址
+            //component:path对应的组件
+            //hash
+            {path:'/login',component:option1},
+            {path:'/register',component:option2}
+        ]
+        //第四步创建路由对象，当vue-router包引入之后，在window全局对象就有一个路由的构造函数VueRouter
+        //在new的时候，可以为构造函数传递一个配置对象
+        var routerObj = new VueRouter({
+            routes
+        })
+        var vm=new Vue ({
+            el: '#app',
+            data: {},
+            methods: {},
+            router:routerObj
+        })
+    </script>
+</body>
+</html>
