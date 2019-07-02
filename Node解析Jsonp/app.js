@@ -2,6 +2,8 @@ const http = require('http')
 const urlModule = require('url')
 const fs = require('fs')
 const querystring = require('querystring')
+var db = require('./db');
+
 //引入express
 // const express = require('express')
 // const app = express()
@@ -32,14 +34,9 @@ http.createServer((req,res) =>{
         let backString = `${query.callback}()`
         res.end(backString)
     }else if(url === '/getData'){
-        console.log(req)
-        fs.readFile('data.txt','utf-8',(err,data) => {
-            if(err){
-                res.end("加载数据出错")
-            }else{
-                res.end(data)
-            }
-        })
+        let data = queryData()
+        console.log(data)
+        res.end(data)
     }else if(url === '/add' && req.method.toLocaleLowerCase() === 'post'){
         // savefile("123")
             console.log("add123")
@@ -61,12 +58,13 @@ http.createServer((req,res) =>{
     console.log('server listen at http://127.0.0.1:3000')
 })
 
-function savefile (data){
- fs.writeFile('data.txt',data,(err)=>{
-    if(err){
-        console.log(err)
-    }else{
-        console.log("ok")
-    }
-  })   
+function queryData(){
+    let sql = 'select * from brand'
+    db.queryData(sql,(err,res)=>{
+        if(err){
+            console.log(err)
+        }else{
+            console.log(res)
+        }
+    });
 }
