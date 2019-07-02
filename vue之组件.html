@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <my-comp></my-comp>
+        <mycomp2></mycomp2>
+        <mycomp3></mycomp3>
+    </div>
+    <template id="temp">
+        <div>
+            <h3>这是第三钟方式创建的，template要在app跟组件的外面定义</h3>
+        </div>
+    </template>
+    <script>
+        // 1.1 使用Vue.extend来创建全局的vue组件
+        let comp = Vue.extend({
+            template:'<h1>这是通过vue.extend来创建组件</h1>'
+        })
+        //1.2 使用Vue.component('组件名称'，创建出来的组件模板对象)
+        //如果使用Vue.component定义全局组件的时候，组件名称使用驼峰命名，则
+        //在引用组件的时候，需要把驼峰改为小写字母，同时两个单词之间使用-代替
+        //如果没有使用驼峰，则直接使用名称就可以
+        Vue.component('myComp',comp)
+
+
+        // 第二种方式
+        Vue.component('mycomp2',{
+            template:'<div><h3>这是第二种方式创建的组件</h3><span>这个标签是用来说明在template中的标点必须只有一个根组件</span></div>'
+        })
+
+        // 第三种方式
+        Vue.component('mycomp3',{
+            template:'#temp'
+        })
+
+        var vm=new Vue ({
+            el: '#app'
+        })
+
+
+
+        
+    </script>
+</body>
+</html>

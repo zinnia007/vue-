@@ -5,28 +5,48 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!-- 第一步：引入 -->
     <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <style>
+        /* 这是vueRouter中自带的路由高亮得的样式类，当在当前路由下，此标签会有一个router-link-active这样的类，
+        当然类的名字，是可以在vueRouter构造器修改的，myactive就是我们自己修改的 */
+        .router-link-active,.myactive{
+            color:red;
+            background-color: aqua;
+            font-size: 30px;
+        }
+    </style>
 </head>
 <body>
-    <div id="app">dscc
+    <!-- 路由整个过程：点击a标签url地址发生改变，触发路由得监听事件，然后回进行路由规则得匹配
+                查找是否又对应得path,如果有，就会在router-view中展示 -->
+    <div id="app">
+        <a href="#/login">登录</a>
+        <a href="#/register">注册</a>
+        <!-- vue-router提供得元素，专门用来做占位符得，将来，路由规则匹配到的组件 就会展示到router-view组件中去 -->
         <router-view></router-view>
+        <!-- router-link回默认为a标签显示，可以通过tag属性指定其标签得展示形式，但是点击以后一九回跳转 -->
+        <router-link to='/login' tag='span'>routerlink登录</router-link>
+        <router-link to='/register'>routerlink注册</router-link>
+
     </div>
     <script>
         // 第二步：定义路由组件，也可以从其他文件import进来
-        let option1 = { template:'<h1>登录按钮</h1>'}
-        let option2 = { template:'<h1>注册按钮</h1>'}
+        var option1 = { template:'<h1>登录按钮</h1>'}
+        var option2 = { template:'<h1>注册按钮</h1>'}
         //第三步：定义路由,路由匹配规则
         var routes =[
             //每个路由规则都是一个对象，包含两个属性
             //path:监听路由连接地址
-            //component:path对应的组件
+            //component:path对应的组件   
             //hash
+            {path:'/',redirect:'/login'},//做地址重定项，当我刚进入没有哈希得时候，回默认帮我们重定向到login
             {path:'/login',component:option1},
             {path:'/register',component:option2}
         ]
         //第四步创建路由对象，当vue-router包引入之后，在window全局对象就有一个路由的构造函数VueRouter
         //在new的时候，可以为构造函数传递一个配置对象
         var routerObj = new VueRouter({
-            routes
+            routes,
+            linkActiveClass:'myactive'//自定义路由高亮的类 
         })
         var vm=new Vue ({
             el: '#app',

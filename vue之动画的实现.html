@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 引入animation.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <style>
+        /* vue原生过渡动画 */
+        .v-enter,
+        .v-leave-to{
+            opacity: 0;
+            transform: translateX(50px)
+        }
+
+       .v-enter-active,
+        .v-leave-active{
+            transition:all 0.4s ease-in;
+        }
+
+        .my-enter,
+        .my-leave-to{
+            opacity: 0;
+            transform: translateY(50px)
+        }
+
+       .my-enter-active,
+        .my-leave-active{
+            transition:all 0.4s ease-in;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 使用过渡动画
+        第一步：用transition将其包裹起来 -->
+        <input type="button" value="show" @click="flag=!flag">
+        <transition>
+                <h2 v-show="flag">我是h2</h2>
+        </transition>
+        <!-- 当我们幺用不同的过度动画的时候，就要用那么属性,当然在设置样式的时候也要用my- -->
+        <input type="button" value="show2" @click="flag1=!flag1">
+        <transition name="my">
+                <h2 v-show="flag1">我是h3</h2>
+        </transition>
+
+          <!-- 使用animation.css库来使用动画 -->
+          <!-- bounceIn进入动画
+          bounceOut出去动画
+          duration：设置时长，可以用对象分别是设置进入和出去的时长 -->
+        <input type="button" value="我使用了animation" @click="flag2=!flag2">
+        <transition enter-active-class='bounceIn' leave-active-class="bounceOut" :duration="{leave:400,enter:10}">
+            <h2 v-show='flag2' class="animated">我使用了animation</h2>   
+        </transition>
+        
+    </div>
+    <script>
+        var vm=new Vue ({
+            el: '#app',
+            data: {
+              flag:false,
+              flag1:false,
+              flag2:false
+            },
+            methods: {
+              
+            }
+        })
+    </script>
+</body>
+</html>
