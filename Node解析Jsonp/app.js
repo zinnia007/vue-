@@ -2,8 +2,21 @@ const http = require('http')
 const urlModule = require('url')
 const fs = require('fs')
 const querystring = require('querystring')
+//引入express
+// const express = require('express')
+// const app = express()
 
-//创建一个http服务器
+// app.get('/',(req,res) => {
+//     res.send('hello word')
+// })
+
+// app.listen(3000,() =>{
+//     console.log('port 3000')
+// })
+
+////===================================================================
+//这是原生js实现的
+// //创建一个http服务器
 http.createServer((req,res) =>{
     console.log(req.url,req.method)
     //简单粗暴解决二跨域问题，允许所有的域进行访问
@@ -28,7 +41,8 @@ http.createServer((req,res) =>{
             }
         })
     }else if(url === '/add' && req.method.toLocaleLowerCase() === 'post'){
-            console.log("add")
+        // savefile("123")
+            console.log("add123")
             var body = '';
             //// 通过req的data事件监听函数，每当接受到请求体的数据，就累加到body变量中
             req.on('data', function (data) {               
@@ -37,9 +51,8 @@ http.createServer((req,res) =>{
 
             req.on('end', function () {
                 console.log(body)
-                savefile(body)
-                res.end(body)
-                
+                savefile('1')
+                res.end(body)   
             })
     }else{
         res.end('404')
