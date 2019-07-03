@@ -50,7 +50,7 @@ http.createServer((req,res) =>{
             });
 
             req.on('end', function () {
-                console.log(body)
+                console.log(JSON.stringify(body))
                 savefile('1')
                 res.end(body)   
             })

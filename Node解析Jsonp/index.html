@@ -3,26 +3,78 @@
 <head>
     <title></title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <div id='app'>
-        {{msg}}
+
+        
+        <div class="panel panel-primary">
+              <div class="panel-heading">
+                    <h3 class="panel-title">添加品牌</h3>
+              </div>
+              <div class="panel-body inline">
+                    <form action="" method="POST" role="form" class="form-inline ">
+                        <div class="form-group">
+                            <label for="">ID
+                               <input type="text" class="form-control" id="id" v-model='id'>
+                            </label>
+                            <label for="">Name
+                                 <input type="text" class="form-control" id="name" v-model='name'>
+                            </label>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <label for="">搜索
+                                <input type="text" class="form-control" id="" >
+                            </label>
+                        </div>
+                       
+                    </form>
+                    
+              </div>
+        </div>
+
+        
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in list" :key="item.id" >
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                </tr>
+            </tbody>
+        </table>
+        
     </div>
     <script>
         axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'; 
         var vm = new Vue({
             el:'#app',
             data:{
-                msg:'',
-                count:0
+                id:'',
+                name:'',
+                list:[
+                    {
+                        id:1001,
+                        name:'zinnia'
+                    },{
+                        id:1002,
+                        name:'zll'
+                    }
+                ]
             },
             methods: {
                 show(){
+                    let that = this;
                     axios.get('http://127.0.0.1:3000/getData')
                     .then((res)=>{
                         console.log(res)
-                        this.msg = res.data
+                        that.list = res.data
                     })
                     .catch((err) => {
                         console.log(err)
@@ -33,7 +85,7 @@
                     let that=this;
                    this.count++;
                     axios.post('http://127.0.0.1:3000/add',{
-                        'id':'1001',
+                        'id':'1002',
                         'name':'zll'
                     })
                     .then((res) => {
@@ -43,11 +95,20 @@
                     .catch((err)=> {
                         console.log(err)
                     })
-                }
+                },
+                delete(){
+                    axios.get('http://127.0.0.1:3000/delete?id=1002')
+                    .then(res=>{
+                        console.log(res)
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+                },
             },
             created(){
-            //    this.show()
-              this.add()
+               this.show()
+            //   this.add()
+            // this.delete()
             }    
         })
     </script>
