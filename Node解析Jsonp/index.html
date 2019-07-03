@@ -3,51 +3,128 @@
 <head>
     <title></title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <div id='app'>
-        {{msg}}
+        <div class="panel panel-primary">
+              <div class="panel-heading">
+                    <h3 class="panel-title">添加品牌</h3>
+              </div>
+              <div class="panel-body inline">
+                    <form action="" method="POST" role="form" class="form-inline ">
+                        <div class="form-group">
+                            <label for="">ID
+                               <input type="text" class="form-control" id="id" v-model='id'>
+                            </label>
+                            <label for="">Name
+                                 <input type="text" class="form-control" id="name" v-model='name'>
+                            </label>
+                            <button type="button" class="btn btn-primary" @click="add">Submit</button>
+                            <label for="">搜索
+                                <input type="text" class="form-control" id="" >
+                            </label>
+                        </div>
+                       
+                    </form> 
+              </div>
+        </div>
+        <table class="table table-hover table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in list" :key="item.id" >
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.date|dateFormat}}</td>
+                    <td>
+                        <a href="" @click.prevent='del(item.id)'>删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
     </div>
     <script>
+        Vue.filter('dateFormat',(data) => {
+            var date = new Date(data)
+            var y = date.getFullYear();
+            var m = date.getMonth()+1;
+            var d = date.getDate();
+            
+            var hh = date.getHours();
+            var mm = date.getMinutes();
+            var ss = date.getSeconds();
+            return  `${y}-${m.toString().padStart(2,'0')}-${d.toString().padStart(2,'0')} 
+            ${hh.toString().padStart(2,'0')}:${mm.toString().padStart(2,0)}:${ss.toString().padStart(2,'0')}`
+        })
         axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'; 
         var vm = new Vue({
             el:'#app',
             data:{
-                msg:'',
-                count:0
+                id:'',
+                name:'',
+                list:[]
             },
             methods: {
                 show(){
+                    let that = this;
                     axios.get('http://127.0.0.1:3000/getData')
                     .then((res)=>{
                         console.log(res)
-                        this.msg = res.data
+                        that.list = res.data
                     })
                     .catch((err) => {
                         console.log(err)
                     })   
                 },
+                add1(){
+                    console.log("add1")
+                },
                 add(){
-                    console.log("add")
-                    let that=this;
-                   this.count++;
-                    axios.post('http://127.0.0.1:3000/add',{
-                        'id':'1001',
-                        'name':'zll'
-                    })
+                    let obj = {
+                        id:this.id,
+                        name:this.name,
+                        date:new Date()
+                    }
+                    axios.post('http://127.0.0.1:3000/add',obj)
                     .then((res) => {
-                        console.log("成功返回",that.count)
-                        console.log(res.data)
+                        this.list.push(obj)
                     })
                     .catch((err)=> {
                         console.log(err)
                     })
-                }
+                },
+                del(id){
+                    console.log(id)
+                    axios.get(`http://127.0.0.1:3000/delete?id=${id}`)
+                    .then(res=>{
+                        console.log('11111',res)
+                        console.log(this.list)
+                       let index = this.list.findIndex((item) => {
+                            if(item.id == id){
+                                return true
+                            }
+                        })
+                        console.log(index)
+                        this.list.splice(index,1)
+                        console.log(this.list)
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+                },
             },
             created(){
                this.show()
             //   this.add()
+            // this.delete()
             }    
         })
     </script>
