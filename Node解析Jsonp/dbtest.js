@@ -13,9 +13,8 @@ http.createServer((req,res) => {
         let sql = 'select * from brand'
         db.queryData(sql,(err,data) => {
             if(err){
-                console.log(err)
+                res.end(err)
             }else{
-                console.log(data)
                 res.end(JSON.stringify(data))
             }
         })
@@ -27,25 +26,21 @@ http.createServer((req,res) => {
         });
         req.on('end', function () {
             let data = JSON.parse(body)
-            console.log(data)
             let sql = `insert into brand values (${data.id},'${data.name}','${data.date}')` 
             db.queryData(sql,(err,data)=>{
                 if(err){
-                    console.log(err)
-                }else{
-                    console.log(data)
+                    res.end(err)
                 }
             })
             res.end("success")
         })
     }else if(url === '/delete'){
-        console.log(query.id)
         let sql = `delete from brand where id = ${query.id}`
-        db.queryData(sql,(err,res) => {
+        db.queryData(sql,(err,data) => {
             if(err){
-                console.log(err)
+               res.end(err)
             }else{
-                console.log("delete success")
+                res.end("delete success")
             }
         })
     }else{
