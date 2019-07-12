@@ -5,7 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+<<<<<<< HEAD
     <script src="./main.js"></script>
+=======
+    <!-- 不推荐在这里引用任何包或者任何css文件 -->
+    <!-- <script src="main.js"></script> -->
+    <!-- 因为main中的代码，涉及到es6的信誉发，浏览器识别，所以main不能直接引用 -->
+    <!-- 通过webpack前端构建工具，把main.js做了一下处理，生成了一个bundle.js的文件webpack src/main.js -o  dist/bundle.js -->
+    <script src="../dist/bundle.js"></script>
+
+    <!-- 
+        webpack的作用
+        1.webpack 能够处理JS文件的相互依赖关系
+        2.webpack能够处理js的兼容问题，浏览器不识别的语法转为低级的浏览器能够正常识别的语法
+
+        //命令：webpack 要打包的文件路径 -o 输出的文件路径
+    -->
+>>>>>>> 81debac1b52307e642a06779bd623673ca8ee56d
 </head>
 <body>
     <ul>
