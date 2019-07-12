@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 引入animation.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+</head>
+<style>
+    .ball{
+        width: 20px;
+        height: 20px;
+        border-radius: 20px;
+        background-color: aqua;
+    }
+</style>
+<body>
+    <div id="app">
+        <input type="button" value="点我" @click="flag=!flag">
+        <!--
+             1.要动画的东西要包裹在transition之中
+             2.动画有八个钩子函数,可以做半场动画
+                before-enter enter after-enter enter-cancelled
+                before-leave leave after-leave leave-cancelled
+        -->
+        <transition
+            @before-enter="beforeEnter"
+            @enter="enter"
+            @after-enter="afterEnter"
+        >
+            <div class="ball" v-if="flag"></div>
+        </transition>  
+    </div>
+    <script>
+        var vm=new Vue ({
+            el: '#app',
+            data: {
+                flag:false
+            },
+            methods: {
+                beforeEnter(el){
+                   el.style.transform="translate(0,0)"
+                },
+                enter(el,done){
+                    //这句话要加上，具体原理不明，如果不加，没有动画效果，强制动画刷新
+                    el.offsetWidth
+                    el.style.transform="translate(200px,200px)"
+                    el.style.transition="all 0.5s ease-in";
+                    
+                    //这其实done其实是after-enter的函数的引用，加入之后，过度动画结束之后，立即调用
+                    done()
+                },
+                afterEnter(el){
+                    // 在动画结束的时候，我们让小球消失
+                    this.flag = false
+                }
+            }
+        })
+    </script>
+</body>
+</html>

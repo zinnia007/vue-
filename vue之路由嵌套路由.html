@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/parent">点击我会打开父组件</router-link>
+        <router-view></router-view>
+    </div>
+    <template id="parentComp">
+        <div>
+            <h1>我是父组件啊</h1>
+            <router-link to='/parent/childComp'>点击我可以打开父组件中的子组件啊</router-link>
+            <router-view></router-view>
+        </div>        
+    </template>
+    <script>        
+        var parentComp = {
+            template:"#parentComp"
+        }        
+        var childComp = {
+            template:'<h3>我是子组件啊</h3>'
+        }
+        var routes=[
+            {
+                path:'/parent',
+                component:parentComp,
+                // 在children中的path,不要加/,如果加入/总是会匹配跟路由
+                children:[
+                    {path:'childComp',component:childComp}
+                ]
+            }
+        ]        
+        var routeObj = new VueRouter({
+            routes 
+        })
+        var vm=new Vue ({
+            el: '#app',
+            router:routeObj
+        })
+    </script>
+</body>
+</html>

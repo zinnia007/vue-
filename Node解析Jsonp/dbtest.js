@@ -27,7 +27,7 @@ http.createServer((req,res) => {
         });
         req.on('end', function () {
             let data = JSON.parse(body)
-            console.log(data)
+            //此处写的时候遇到了一个bug，插入语句没有带单引号
             let sql = `insert into brand values (${data.id},'${data.name}','${data.date}')` 
             db.queryData(sql,(err,data)=>{
                 if(err){

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 引入 -->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 路由跳转传参获取参数的两种方式 -->
+        <!-- 这是通过query的方式来获取的路由的参数,zaicreated的时候,this.$route.query中 -->
+        <router-link to="/login?id=1">登录</router-link>
+        <!-- 这是通过params的方式来获取路由参数的,在配置路由参数的时候,要添加参数的占位符,在to跳转的时候也要带上参数 -->
+        <router-link to="/register/1/zinnia">注册</router-link>
+        <router-view></router-view>
+    </div>
+
+    <template id="login"><div> 登录--id={{$route.query.id}}</div></template>
+    <template id="register"><div>注册--{{$route.params.id}}--{{$route.params.name}}</div> </template>
+    <script>
+        // 定义两个组件
+        var login={
+            template:'#login',
+            created(){
+                //可以通过this.$route.query来获取参数对象
+                console.log(this.$route)
+            }
+        }
+        var register = {
+            template:'#register',
+            created(){
+                console.log(this.$route)
+            }
+        }
+        //设置路由参数
+        var routes = [
+            {
+                path:'/login',
+                component:login
+            },
+            {
+                path:'/register/:id/:name',//:相当于参数的占位符,我们在route-link跳转得时候,必须要跟上参数
+                component:register
+            }
+        ]
+        //定义一个路由对象
+        var routerObj = new VueRouter({
+            routes
+        })
+        var vm=new Vue ({
+            el: '#app',
+            router:routerObj
+        })
+    </script>
+</body>
+</html>

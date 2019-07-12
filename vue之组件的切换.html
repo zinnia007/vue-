@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<style>
+    .v-enter,
+    .v-leave-to{
+        opacity: 0;
+        transform: translateX(80px)
+    }
+    .v-enter-active,
+    .v-leave-active{
+        transition:all 0.5s ease;
+    }
+</style>
+<body>
+    <div id="app">
+        <!-- 
+            第一种方式：
+            通过if else进行组件之间的切换 ，
+            缺点：适合两种组件进行切换，如果要切换的组件过多，就不方便了
+        -->
+        <input type="button" value="登录" @click="flag=true">
+        <input type="button" value="注册" @click="flag=false">
+
+        <login v-if="flag"></login>
+        <register v-else="flag"></register>
+        <!-- 
+            第二种方式：
+            使用component标签加:is属性  
+            注意：is要用绑定的方式:is
+                 :is的值的类型是string，如果使用变量直接放组件名的时候 :is="'login'"，否则会当成变量处理
+            乐意进行多个组件进行切换          
+         -->
+         <!-- 
+             transition标签是为了加入组件切换的过渡动画
+             mode属性设置切换的模式out-in,先出后进
+          -->
+        <input type="button" value="登录" @click="compName='login'">
+        <input type="button" value="注册" @click="compName='register'">
+         <transition mode = "out-in">
+             <component :is="compName"></component>
+         </transition>     
+    </div>
+    <script>
+        
+    // 定义组件
+        Vue.component('login',{
+            template:'<h1>登录组件</h1>'
+        })
+        Vue.component('register',{
+            template:'<h2>注册组件</h2>'
+        })
+
+        var vm=new Vue ({
+            el: '#app',
+            data: {
+                flag:true,
+                compName:'login'
+            },
+            methods: {               
+            }
+        })
+    </script>
+</body>
+</html>

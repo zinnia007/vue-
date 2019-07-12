@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 引入animation.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <style>
+       .li{
+           border: 1px dashed #bcbcbc;
+           line-height: 30px;
+           list-style-type: none;
+           width: 100%;
+       }
+       .li:hover{
+           background-color: aqua;
+           transition: all 0.5s ease-in;
+       }
+       .v-enter,
+       .v-leave-to{
+            opacity: 0;
+            transform: translateY(80px);
+       }
+
+       .v-leave-active,
+       .v-enter-active{
+           transition: all 0.5s ease;
+       }
+       /* 这是一个固定的搭配.v-move，v-leave-active，当删除一个元素的术后，实现后续元素渐渐的飘上来的效果 */
+       .v-move{
+           transition: all 0.5s ease;
+       }
+       .v-leave-active{
+            position: absolute;            
+       }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model='id'>
+        <input type="text" v-model='name'>
+        <input type="button" value="添加" @click="add">
+        <!-- <ul> -->
+            <transition-group appear tag='ul'>
+                <li v-for="(item,index) in list" class="li" :key="item.id" @click="del(index)">
+                    {{item.id}}---{{item.name}}
+                </li>
+            </transition-group>
+        <!-- </ul> -->
+    </div>
+    <script>
+        var vm=new Vue ({
+            el: '#app',
+            data: {
+                id:'',
+                name:'',
+                list:[
+                    {id:1,name:'aaa'},
+                    {id:2,name:'bbb'},
+                    {id:3,name:'ccc'}
+                ]
+            },
+            methods: {
+              add(){
+                  this.list.push({
+                      id:this.id,
+                      name:this.name
+                  })
+              },
+              del(i){
+                  this.list.splice(i,1)
+              }
+            }
+        })
+    </script>
+</body>
+</html>
